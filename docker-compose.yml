@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: serverdb
+    command: --sql_mode=""
+    restart: always
+    environment:
+      - MYSQL_DATABASE=reservator
+      - MYSQL_ROOT=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=reservator_user
+      - MYSQL_PASSWORD=reservator_user
+    ports:
+      - 13306:3306
+    volumes:
+      - ./data/db/mysql:/var/lib/mysql
+  api-rest:
+    build: .
+    ports:
+      - 9999:9999
+    depends_on:
+      - db
+    
