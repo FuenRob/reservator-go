@@ -8,16 +8,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func main() {
-
-	db := utils.InitDBConnection()
+func newApp() *fiber.App {
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
 	})
 
+	db := utils.InitDBConnection()
+
 	routes.SetupShopRoutes(app, db)
 
-	log.Fatal(app.Listen(":9999"))
+	return app
+}
+
+func main() {
+	log.Fatal(newApp().Listen(":9999"))
 }
